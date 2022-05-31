@@ -1,14 +1,14 @@
 package com.hibernate.entity;
 
-import com.hibernate.converter.BirthdayConverter;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.Objects;
 
 
 @Data
@@ -17,18 +17,22 @@ import java.util.Objects;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
+@TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User {
 
     @Id // should be implemented serializable
     private String username;
     private String firstname;
     private String lastname;
-//    @Convert(converter = BirthdayConverter.class) // autoApply=true added as converter
+//    @Convert(converter = BirthdayConverter.class) // autoApply=true added as converter in configuration/Birthday class
     @Column(name = "birth_date")
     private Birthday birthDate;
-//    private Integer age;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+//    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
+    @Type(type = "jsonb")
+    private String info;
 
 
 
