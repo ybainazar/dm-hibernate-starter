@@ -10,6 +10,7 @@ public class HibernateRunner {
     public static void main(String[] args) throws SQLException {
 //        BlockingQueue<Connection> pool = null;
 
+
 //
 //        var connection = DriverManager
 //                .getConnection("jdbc:postgresql://localhost:5432/dm_hibernate", "postgres", "postgres");
