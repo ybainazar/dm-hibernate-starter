@@ -53,10 +53,33 @@ public class HibernateRunner {
 //            session.delete(user);
 
 
-
 //        SessionFactory{  BasicTypes <- MetaModel -> [Entities(User with @Id)  -->  Entity Persisters(EntityPersister responsible for CRUD)] -> CRUD }
 //        Sessions{ Session <-> PersistentContext(Cache)}
 
+
+
+/**
+ *  0--- new Entity()---> [Transient]
+ *  |                            |
+ *  |                            |
+ *  Session.get             Session.save(entity)
+ *  Session.createQuery     Session.saveOrUpdate(entity)
+ *  |                           |
+ *  |                           |
+ *  |-------------------> [Persistent (Cached)] ----Session.delete----> [Removed]
+ *                          |              |
+ *                          |              |
+ *                         evict           saveOrUpdate
+ *                         clear           update
+ *                         close           merge
+ *                          |              |
+ *                          |              |
+ *                       [      Detached      ]
+ *
+ *
+ *
+ *
+ * */
 
             var user1 = session.get(User.class, "ivan2@gmail.com");
             user1.setLastname("Petrov2"); // dirty session -> will change data in database
