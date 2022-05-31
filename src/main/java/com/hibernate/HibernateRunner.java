@@ -11,6 +11,7 @@ public class HibernateRunner {
 //        BlockingQueue<Connection> pool = null;
 
 
+
 //
 //        var connection = DriverManager
 //                .getConnection("jdbc:postgresql://localhost:5432/dm_hibernate", "postgres", "postgres");
