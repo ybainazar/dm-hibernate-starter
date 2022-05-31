@@ -2,15 +2,17 @@ package com.hibernate;
 
 import com.hibernate.entity.User;
 import com.hibernate.util.HibernateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Transaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
+@Slf4j
 public class HibernateRunner2 {
 
-    public static final Logger log = LoggerFactory.getLogger(HibernateRunner2.class);
+//    public static final Logger log = LoggerFactory.getLogger(HibernateRunner2.class); // not to write this -> user @Slf4j from Lombok
 
 
     public static void main(String[] args) throws SQLException {
