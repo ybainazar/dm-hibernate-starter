@@ -51,7 +51,21 @@ public class HibernateRunner {
 //            session.save(user);
 //            session.saveOrUpdate(user);
 //            session.delete(user);
-            var user = session.get(User.class, "ivan2@gmail.com");
+
+
+
+//        SessionFactory{  BasicTypes <- MetaModel -> [Entities(User with @Id)  -->  Entity Persisters(EntityPersister responsible for CRUD)] -> CRUD }
+//        Sessions{ Session <-> PersistentContext(Cache)}
+
+
+            var user1 = session.get(User.class, "ivan2@gmail.com");
+            user1.setLastname("Petrov2"); // dirty session -> will change data in database
+            session.flush(); // apply first-level cache to database
+            var user2 = session.get(User.class, "ivan2@gmail.com"); // will be cached
+
+//            session.evict(user1); // delete from cache (persistentContext --- first-level cache)
+//            session.clear(); // clear all cache (hash map)
+//            session.close(); // clear all cache (hash map)
 
             session.getTransaction().commit();
         }
