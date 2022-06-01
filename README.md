@@ -95,3 +95,17 @@ public class PersonalInfo implements Serializable {
     private Birthday birthDate;
 }
 ```
+
+## Proxy
+* Can be created by using following libraries:
+  * ByteBuddy (used now)
+  * Javaassist (replaced clib)
+  * Clib (used in first versions of Hibernate)
+
+## ManyToOne
+* optional (for ref tables)
+  * true (left join) 
+  * false (inner join)
+* FetchType (fetch = FetchType.LAZY/EAGER)
+  * EAGER - returns ref
+  * LAZY - within current Session, returns by request

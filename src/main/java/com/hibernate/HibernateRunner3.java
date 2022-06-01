@@ -26,7 +26,7 @@ public class HibernateRunner3 {
                         .lastname("Ivanov")
                         .birthDate(new Birthday(LocalDate.of(2000, 1, 1)))
                         .build())
-                .companyId(company)
+                .company(company)
                 .build();
 
         log.info("User entity is in transient state: {}", user);
@@ -35,9 +35,11 @@ public class HibernateRunner3 {
             try (var session = sessionFactory.openSession()) {
                 session.beginTransaction();
 
-                session.save(company);
-                session.save(user);
-
+//                session.save(company);
+//                session.save(user);
+                var user1 = session.get(User.class, 1L);
+                var company1 = user1.getCompany();
+                company1.getId();
 
                 session.getTransaction().commit();
             }

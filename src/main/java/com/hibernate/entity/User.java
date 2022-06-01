@@ -1,10 +1,7 @@
 package com.hibernate.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
@@ -14,6 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = "company")
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
@@ -40,9 +38,9 @@ public class User {
     @Type(type = "jsonb")
     private String info;
 
-    @ManyToOne
+    @ManyToOne(optional = false, fetch = FetchType.LAZY) // not null constraints
     @JoinColumn(name = "company_id") // if not using, rule -> company + _ + @Id = company_id
-    private Company companyId;
+    private Company company;
 
 
 
