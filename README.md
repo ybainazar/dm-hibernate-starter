@@ -31,3 +31,67 @@
  *
  * */
 ```
+
+##  @GeneratedValue
+### strategy
+1. **IDENTITY** 
+- common one
+``` java
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+```
+2. **SEQUENCE** 
+- uses sequence generator from DB
+```java
+@Id
+@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+@SequenceGenerator(name = "user_generator", sequenceName = "users_id_seq", allocationSize = 1)
+private Long id;
+```
+```sql
+create sequence users_id_seq
+owned by users.id;
+```
+3. **TABLE** 
+- creates additional table to get/load IDs
+```java
+@Id
+@GeneratedValue(strategy = GenerationType.TABLE, generator = "user_generator")
+@TableGenerator(name = "user_generator", table = "all_sequence",
+        pkColumnName = "table_name", valueColumnName = "pk_value")
+private Long id;
+```
+```sql
+create table all_sequence
+(
+    table_name varchar(32) primary key ,
+    pk_value bigint not null
+)
+```
+
+## Primary key (several columns) - _better not to use_
+
+* add @EmbeddedId
+```java
+@EmbeddedId
+@AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+private PersonalInfo personalInfo;
+```
+* in PersonalInfo (Embeddable class) make it Serializable. Auto generate by IDEA
+```java
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Embeddable
+public class PersonalInfo implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    private String firstname;
+    private String lastname;
+    private Birthday birthDate;
+}
+```

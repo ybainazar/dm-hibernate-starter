@@ -20,19 +20,29 @@ import javax.persistence.*;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 public class User {
 
-    @Id // should be implemented serializable
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Embedded
+    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date"))
+    private PersonalInfo personalInfo;
+
+
+    @Column(unique = true)
     private String username;
-    private String firstname;
-    private String lastname;
-//    @Convert(converter = BirthdayConverter.class) // autoApply=true added as converter in configuration/Birthday class
-    @Column(name = "birth_date")
-    private Birthday birthDate;
+
+//    @Transient // not to use this column in hibernate
     @Enumerated(EnumType.STRING)
     private Role role;
 
 //    @Type(type = "com.vladmihalcea.hibernate.type.json.JsonBinaryType")
     @Type(type = "jsonb")
     private String info;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id") // if not using, rule -> company + _ + @Id = company_id
+    private Company companyId;
 
 
 
