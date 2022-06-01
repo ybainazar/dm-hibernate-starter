@@ -102,10 +102,17 @@ public class PersonalInfo implements Serializable {
   * Javaassist (replaced clib)
   * Clib (used in first versions of Hibernate)
 
+* unporxy
+```java
+var object = Hibernate.unproxy(company1);
+```
+
 ## ManyToOne
 * optional (for ref tables)
   * true (left join) 
   * false (inner join)
 * FetchType (fetch = FetchType.LAZY/EAGER)
-  * EAGER - returns ref
+  * EAGER - returns ref (ref object add to PersistentContext(Cache))
   * LAZY - within current Session, returns by request
+* Cascade (cascade = CascadeType.DETACH) 
+  * 

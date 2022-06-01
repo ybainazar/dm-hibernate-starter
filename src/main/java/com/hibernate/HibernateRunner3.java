@@ -6,6 +6,7 @@ import com.hibernate.entity.PersonalInfo;
 import com.hibernate.entity.User;
 import com.hibernate.util.HibernateUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Hibernate;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public class HibernateRunner3 {
                 .build();
 
         var user = User.builder()
-                .username("ivan3@gmail.com")
+                .username("peter1@gmail.com")
                 .personalInfo(PersonalInfo.builder()
                         .firstname("Ivan")
                         .lastname("Ivanov")
@@ -37,9 +38,7 @@ public class HibernateRunner3 {
 
 //                session.save(company);
 //                session.save(user);
-                var user1 = session.get(User.class, 1L);
-                var company1 = user1.getCompany();
-                company1.getId();
+                session.saveOrUpdate(user);
 
                 session.getTransaction().commit();
             }

@@ -38,7 +38,7 @@ public class User {
     @Type(type = "jsonb")
     private String info;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY) // not null constraints
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}) // not null constraints
     @JoinColumn(name = "company_id") // if not using, rule -> company + _ + @Id = company_id
     private Company company;
 
