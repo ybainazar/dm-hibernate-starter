@@ -1,6 +1,7 @@
 package com.hibernate;
 
 import com.hibernate.entity.Company;
+import com.hibernate.entity.Profile;
 import com.hibernate.entity.User;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
@@ -27,6 +28,30 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkOneToOne() {
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            var user = User.builder()
+                    .username("test2@gmail.com")
+                    .build();
+
+            var profile = Profile.builder()
+                    .street("Abaya 5")
+                    .language("RU")
+                    .build();
+
+            profile.setUser(user);
+
+            session.save(user);
+
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void checkOrhanRemoval() {

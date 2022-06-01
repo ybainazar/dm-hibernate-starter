@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "username") // natural keys
-@ToString(exclude = "company")
+@ToString(exclude = {"company", "profile"})
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
@@ -42,6 +42,9 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY) // not null constraints
     @JoinColumn(name = "company_id") // if not using, rule -> company + _ + @Id = company_id
     private Company company;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
+    private Profile profile;
 
 
 
