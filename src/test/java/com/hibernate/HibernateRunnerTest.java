@@ -1,8 +1,6 @@
 package com.hibernate;
 
-import com.hibernate.entity.Company;
-import com.hibernate.entity.Profile;
-import com.hibernate.entity.User;
+import com.hibernate.entity.*;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Session;
@@ -19,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
@@ -28,6 +27,31 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
+
+
+    @Test
+    void checkManyToMany() {
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            var user = session.get(User.class, 7L);
+            var chat = session.get(Chat.class, 1L);
+
+            var userChat = UserChat.builder()
+                    .createdAt(Instant.now())
+                    .createdBy(user.getUsername())
+                    .build();
+
+            userChat.setUser(user);
+            userChat.setChat(chat);
+
+            session.save(userChat);
+
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void checkOneToOne() {
@@ -59,8 +83,8 @@ class HibernateRunnerTest {
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-           Company company = session.getReference(Company.class, 6);
-           company.getUsers().removeIf(user -> user.getId().equals(7L));
+            Company company = session.getReference(Company.class, 6);
+            company.getUsers().removeIf(user -> user.getId().equals(7L));
 
 
             session.getTransaction().commit();

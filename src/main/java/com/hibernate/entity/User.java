@@ -6,13 +6,15 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "username") // natural keys
-@ToString(exclude = {"company", "profile"})
+@ToString(exclude = {"company", "profile", "userChats"})
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
@@ -46,6 +48,9 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = false)
     private Profile profile;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "user")
+    private Set<UserChat> userChats = new HashSet<>();
 
 
 //
