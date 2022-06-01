@@ -21,11 +21,44 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkOrhanRemoval() {
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+           Company company = session.getReference(Company.class, 6);
+           company.getUsers().removeIf(user -> user.getId().equals(7L));
+
+
+            session.getTransaction().commit();
+        }
+    }
+
+
+    @Test
+    void checkLazyInitialization() {
+        Company company = null;
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            company = session.get(Company.class, 6);
+
+
+            session.getTransaction().commit();
+        }
+        var users = company.getUsers();
+        System.out.println(users.size());
+    }
+
 
     @Test
     void deleteCompany() {

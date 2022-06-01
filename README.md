@@ -107,6 +107,12 @@ public class PersonalInfo implements Serializable {
 var object = Hibernate.unproxy(company1);
 ```
 
+* to get proxy directly 
+```java
+session.getReference(Company.class , 1);
+```
+
+
 ## ManyToOne
 * optional (for ref tables)
   * true (left join) 

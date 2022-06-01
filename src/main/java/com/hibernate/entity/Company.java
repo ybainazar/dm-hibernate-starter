@@ -11,8 +11,8 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "name")
 @ToString(exclude = "users")
-@EqualsAndHashCode(exclude = "users")
 @Builder
 public class Company {
 
@@ -20,12 +20,13 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Builder.Default
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<User> users = new HashSet<>();
-
+// orphanRemoval = true -> what to do with users if we manipulate with Set<User> users. If we delete user from users -> remove from DB
 
     public void addUser(User user) {
         users.add(user);

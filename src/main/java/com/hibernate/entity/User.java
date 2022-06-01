@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of = "username") // natural keys
 @ToString(exclude = "company")
 @Builder
 @Entity
@@ -38,7 +39,7 @@ public class User {
     @Type(type = "jsonb")
     private String info;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL}) // not null constraints
+    @ManyToOne(fetch = FetchType.LAZY) // not null constraints
     @JoinColumn(name = "company_id") // if not using, rule -> company + _ + @Id = company_id
     private Company company;
 
