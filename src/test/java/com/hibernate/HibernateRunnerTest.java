@@ -28,6 +28,21 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
 
+    @Test
+    void localeInfo() {
+        try (var sessionFactory = HibernateUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            var company = session.get(Company.class, 1);
+//            company.getLocales().add(LocaleInfo.of("ru", "Описание на русском"));
+//            company.getLocales().add(LocaleInfo.of("en", "English description"));
+            company.getUsers().forEach((k,v) -> System.out.println(v));
+
+            session.getTransaction().commit();
+        }
+    }
+
 
     @Test
     void checkManyToMany() {
@@ -84,7 +99,7 @@ class HibernateRunnerTest {
             session.beginTransaction();
 
             Company company = session.getReference(Company.class, 6);
-            company.getUsers().removeIf(user -> user.getId().equals(7L));
+//            company.getUsers().removeIf(user -> user.getId().equals(7L));
 
 
             session.getTransaction().commit();
