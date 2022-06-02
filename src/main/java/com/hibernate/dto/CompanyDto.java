@@ -6,6 +6,5 @@ import lombok.Value;
 public class CompanyDto {
 
     String name;
-
     Double amount;
 }
