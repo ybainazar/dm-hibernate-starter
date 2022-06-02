@@ -20,17 +20,17 @@ public class HibernateRunner3 {
                 .name("Google")
                 .build();
 
-        var user = User.builder()
-                .username("peter1@gmail.com")
-                .personalInfo(PersonalInfo.builder()
-                        .firstname("Ivan")
-                        .lastname("Ivanov")
-                        .birthDate(new Birthday(LocalDate.of(2000, 1, 1)))
-                        .build())
-                .company(company)
-                .build();
+//        var user = User.builder()
+//                .username("peter1@gmail.com")
+//                .personalInfo(PersonalInfo.builder()
+//                        .firstname("Ivan")
+//                        .lastname("Ivanov")
+//                        .birthDate(new Birthday(LocalDate.of(2000, 1, 1)))
+//                        .build())
+//                .company(company)
+//                .build();
 
-        log.info("User entity is in transient state: {}", user);
+//        log.info("User entity is in transient state: {}", user);
 
         try (var sessionFactory = HibernateUtil.buildSessionFactory()) {
             try (var session = sessionFactory.openSession()) {
@@ -38,7 +38,7 @@ public class HibernateRunner3 {
 
 //                session.save(company);
 //                session.save(user);
-                session.saveOrUpdate(user);
+//                session.saveOrUpdate(user);
 
                 session.getTransaction().commit();
             }

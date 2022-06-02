@@ -35,11 +35,31 @@ class HibernateRunnerTest {
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var company = Company.builder()
+            var google = Company.builder()
                     .name("Google")
                     .build();
+            session.save(google);
 
-            session.save(company);
+            var programmer = Programmer.builder()
+                    .username("ivan@gmail.com")
+                    .language(Language.JAVA)
+                    .company(google)
+                    .build();
+            session.save(programmer);
+
+            var manager = Manager.builder()
+                    .username("sveta@gmail.com")
+                    .projectName("Starter")
+                    .company(google)
+                    .build();
+            session.save(manager);
+
+            session.flush();
+
+            session.clear();
+
+            var programmer1 = session.get(Programmer.class, 1L);
+            var manager1 = session.get(User.class, 2L);
 
 
             session.getTransaction().commit();
@@ -55,7 +75,7 @@ class HibernateRunnerTest {
             var company = session.get(Company.class, 1);
 //            company.getLocales().add(LocaleInfo.of("ru", "Описание на русском"));
 //            company.getLocales().add(LocaleInfo.of("en", "English description"));
-            company.getUsers().forEach((k,v) -> System.out.println(v));
+            company.getUsers().forEach((k, v) -> System.out.println(v));
 
             session.getTransaction().commit();
         }
@@ -72,8 +92,8 @@ class HibernateRunnerTest {
             var chat = session.get(Chat.class, 1L);
 
             var userChat = UserChat.builder()
-                    .createdAt(Instant.now())
-                    .createdBy(user.getUsername())
+//                    .createdAt(Instant.now())
+//                    .createdBy(user.getUsername())
                     .build();
 
             userChat.setUser(user);
@@ -92,18 +112,18 @@ class HibernateRunnerTest {
              var session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            var user = User.builder()
-                    .username("test2@gmail.com")
-                    .build();
+//            var user = User.builder()
+//                    .username("test2@gmail.com")
+//                    .build();
 
             var profile = Profile.builder()
                     .street("Abaya 5")
                     .language("RU")
                     .build();
 
-            profile.setUser(user);
-
-            session.save(user);
+//            profile.setUser(user);
+//
+//            session.save(user);
 
 
             session.getTransaction().commit();
@@ -164,13 +184,13 @@ class HibernateRunnerTest {
                 .name("Facebook")
                 .build();
 
-        var user = User.builder()
-                .username("sve@gmail.com")
-                .build();
+//        var user = User.builder()
+//                .username("sve@gmail.com")
+//                .build();
 
 //        user.setCompany(company);
 //        company.getUsers().add(user);
-        company.addUser(user);
+//        company.addUser(user);
 
         session.save(company);
 
@@ -207,45 +227,45 @@ class HibernateRunnerTest {
 
     @Test
     void checkReflectionApi() throws SQLException, IllegalAccessException {
-        var user = User.builder()
+//        var user = User.builder()
 //                .username("ivan@gmail.com")
 //                .firstname("Ivan")
 //                .lastname("Ivanov")
 //                .birthDate(LocalDate.of(2000, 10, 12))
 //                .age(22)
-                .build();
-
-        String SQL = """
-                  insert
-                  into
-                  %s
-                  (%s)
-                  values
-                  (%s)
-                """;
-        var tableName = Optional.ofNullable(user.getClass().getAnnotation(Table.class))
-                .map(tableAnnotation -> tableAnnotation.schema() + "." + tableAnnotation.name())
-                .orElse(user.getClass().getName());
-
-        var declaredFields = user.getClass().getDeclaredFields();
-
-        var columnNames = Arrays.stream(declaredFields)
-                .map(field -> Optional.ofNullable(field.getAnnotation(Column.class))
-                        .map(Column::name)
-                        .orElse(field.getName()))
-                .collect(Collectors.joining(", "));
-
-        var columnValues = Arrays.stream(declaredFields)
-                .map(field -> "?")
-                .collect(Collectors.joining(", "));
-
-        System.out.println(SQL.formatted(tableName, columnNames, columnValues));
-
-        Connection connection = null;
-        var preparedStatement = connection.prepareStatement(SQL.formatted(tableName, columnNames, columnValues));
-        for (Field declaredField : declaredFields) {
-            declaredField.setAccessible(true);
-            preparedStatement.setObject(1, declaredField.get(user));
-        }
+//                .build();
+//
+//        String SQL = """
+//                  insert
+//                  into
+//                  %s
+//                  (%s)
+//                  values
+//                  (%s)
+//                """;
+//        var tableName = Optional.ofNullable(user.getClass().getAnnotation(Table.class))
+//                .map(tableAnnotation -> tableAnnotation.schema() + "." + tableAnnotation.name())
+//                .orElse(user.getClass().getName());
+//
+//        var declaredFields = user.getClass().getDeclaredFields();
+//
+//        var columnNames = Arrays.stream(declaredFields)
+//                .map(field -> Optional.ofNullable(field.getAnnotation(Column.class))
+//                        .map(Column::name)
+//                        .orElse(field.getName()))
+//                .collect(Collectors.joining(", "));
+//
+//        var columnValues = Arrays.stream(declaredFields)
+//                .map(field -> "?")
+//                .collect(Collectors.joining(", "));
+//
+//        System.out.println(SQL.formatted(tableName, columnNames, columnValues));
+//
+//        Connection connection = null;
+//        var preparedStatement = connection.prepareStatement(SQL.formatted(tableName, columnNames, columnValues));
+//        for (Field declaredField : declaredFields) {
+//            declaredField.setAccessible(true);
+//            preparedStatement.setObject(1, declaredField.get(user));
+//        }
     }
 }
