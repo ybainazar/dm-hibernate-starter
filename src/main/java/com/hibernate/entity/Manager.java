@@ -2,7 +2,9 @@ package com.hibernate.entity;
 
 import lombok.*;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import java.util.List;
 
 @Data
@@ -10,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+//@DiscriminatorValue("manger")
+@PrimaryKeyJoinColumn(name = "id")
 public class Manager extends User{
 
     private String projectName;

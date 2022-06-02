@@ -2,17 +2,17 @@ package com.hibernate.entity;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Programmer extends User{
+//@DiscriminatorValue("programmer")
+@PrimaryKeyJoinColumn(name = "id")
+public class Programmer extends User {
 
     @Enumerated(EnumType.STRING)
     private Language language;
