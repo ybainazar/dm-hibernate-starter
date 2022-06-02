@@ -21,7 +21,7 @@ import static com.hibernate.util.StringUtils.SPACE;
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
-@TypeDef(name = "dmdev", typeClass = JsonBinaryType.class)
+@TypeDef(name = "dm", typeClass = JsonBinaryType.class)
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
@@ -34,7 +34,7 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @Column(unique = true)
     private String username;
 
-    @Type(type = "dmdev")
+    @Type(type = "dm")
     private String info;
 
     @Enumerated(EnumType.STRING)
