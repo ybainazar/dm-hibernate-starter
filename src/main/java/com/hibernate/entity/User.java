@@ -11,7 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-
+@NamedQuery(name= "findUserByName", query = "select u from User u " +
+                                            " left join u.company c " +
+                                            " where u.personalInfo.firstname = :firstname and c.name = :companyName " +
+                                            " order by u.personalInfo.lastname desc ")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

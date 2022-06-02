@@ -6,6 +6,7 @@ import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.hibernate.usertype.UserType;
 import org.junit.jupiter.api.Test;
 
@@ -21,6 +22,7 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +30,38 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkHql() {
+        try (var sessionFactory = HibernateTestUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            String name = "Ivan";
+//            var users = session.createQuery(
+//                    "select u from User u where u.personalInfo.firstname = ?1", User.class)
+//                    .setParameter(1, name)
+//                    .list();
+
+//            var users = session.createQuery(
+//                            "select u from User u " +
+//                            " left join u.company c " +
+//                            " where u.personalInfo.firstname = :firstname and c.name = :companyName " +
+//                            " order by u.personalInfo.lastname desc ", User.class)
+//                    .setParameter("firstname", name)
+//                    .setParameter("companyName", "Google")
+//                    .list();
+
+            var users = session.createNamedQuery("findUserByName", User.class)
+                    .setParameter("firstname", name)
+                    .setParameter("companyName", "Google")
+                    .setHint(QueH)
+                    .list();
+
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void checkH2() {
