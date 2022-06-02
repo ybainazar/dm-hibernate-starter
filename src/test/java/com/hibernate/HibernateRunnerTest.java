@@ -1,6 +1,7 @@
 package com.hibernate;
 
 import com.hibernate.entity.*;
+import com.hibernate.util.HibernateTestUtil;
 import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Session;
@@ -27,6 +28,23 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.*;
 
 class HibernateRunnerTest {
+
+    @Test
+    void checkH2() {
+        try (var sessionFactory = HibernateTestUtil.buildSessionFactory();
+             var session = sessionFactory.openSession()) {
+            session.beginTransaction();
+
+            var company = Company.builder()
+                    .name("Google")
+                    .build();
+
+            session.save(company);
+
+
+            session.getTransaction().commit();
+        }
+    }
 
     @Test
     void localeInfo() {
