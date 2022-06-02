@@ -6,6 +6,7 @@ import com.hibernate.util.HibernateUtil;
 import lombok.Cleanup;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.jpa.QueryHints;
 import org.hibernate.query.Query;
 import org.hibernate.usertype.UserType;
 import org.junit.jupiter.api.Test;
@@ -55,8 +56,14 @@ class HibernateRunnerTest {
             var users = session.createNamedQuery("findUserByName", User.class)
                     .setParameter("firstname", name)
                     .setParameter("companyName", "Google")
-                    .setHint(QueH)
+                    .setHint(QueryHints.HINT_FETCH_SIZE, "50")
                     .list();
+
+            var countRows = session.createQuery("update User u set u.role = 'ADMIN'")
+                    .executeUpdate();
+
+            var executeUpdate = session.createNativeQuery("select * from users where firstname = 'Ivan'", User.class)
+                    .executeUpdate();
 
 
             session.getTransaction().commit();
