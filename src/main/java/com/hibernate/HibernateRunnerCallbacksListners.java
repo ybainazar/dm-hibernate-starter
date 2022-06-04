@@ -1,6 +1,7 @@
 package com.hibernate;
 
 import com.hibernate.entity.Payment;
+import com.hibernate.interceptor.GlobalInterceptor;
 import com.hibernate.util.HibernateUtil;
 import com.hibernate.util.TestDataImporter;
 
@@ -13,7 +14,10 @@ public class HibernateRunnerCallbacksListners {
     public static void main(String[] args) throws SQLException {
 
         try (var sessionFactory = HibernateUtil.buildSessionFactory();
-             var session = sessionFactory.openSession()) {
+             var session = sessionFactory
+                     .withOptions()
+                     .interceptor(new GlobalInterceptor())
+                     .openSession()) {
             TestDataImporter.importData(sessionFactory);
             session.beginTransaction();
 
