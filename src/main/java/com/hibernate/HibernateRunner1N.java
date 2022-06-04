@@ -2,23 +2,14 @@ package com.hibernate;
 
 import com.hibernate.entity.*;
 import com.hibernate.util.HibernateUtil;
-import com.hibernate.util.TestDataImporter;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Hibernate;
-import org.hibernate.LockMode;
-import org.hibernate.Session;
 import org.hibernate.graph.GraphSemantic;
-import org.hibernate.graph.RootGraph;
-import org.hibernate.graph.SubGraph;
-import org.hibernate.jpa.QueryHints;
-import org.hibernate.query.Query;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Map;
 
 @Slf4j
-public class HibernateRunner3 {
+public class HibernateRunner1N {
 
     public static void main(String[] args) throws SQLException {
 
