@@ -125,3 +125,6 @@ session.getReference(Company.class , 1);
 ## 1 + N problem
 1. BatchSize()
 2. @Fetch(FetchMode.SUBSELECT)
+3. QueryFetch (fetch join)
+4. FetchProfile (work only with get (session.get(User.class, 1L)))
+5. EntityGraph

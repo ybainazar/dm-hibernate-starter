@@ -25,6 +25,16 @@ import static com.hibernate.util.StringUtils.SPACE;
 @Entity
 @Table(name = "users", schema = "public")
 @TypeDef(name = "dm", typeClass = JsonBinaryType.class)
+@NamedEntityGraph(
+        name = "WithCompanyAndChat",
+        attributeNodes = {
+                @NamedAttributeNode("company"),
+                @NamedAttributeNode(value = "userChats", subgraph = "chats"),
+        },
+        subgraphs = {
+                @NamedSubgraph(name = "chats", attributeNodes = @NamedAttributeNode("chat"))
+        }
+)
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
