@@ -155,3 +155,7 @@ session.getReference(Company.class , 1);
    * `.setReadOnly(true)` -> for HQL
 2. Database level
    * `session.createNativeQuery("SET TRANSACTION READ ONLY;").executeUpdate()` 
+
+## Nontransactional Data Access
+* Auto-commit mode
+* do not use, only for READS. 
