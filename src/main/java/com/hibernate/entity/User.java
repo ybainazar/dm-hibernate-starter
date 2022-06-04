@@ -3,10 +3,11 @@ package com.hibernate.entity;
 
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import static com.hibernate.util.StringUtils.SPACE;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "username")
-@ToString(exclude = {"company", "profile", "userChats", "payments"})
+@ToString(exclude = {"company",
+//        "profile",
+        "userChats", "payments"})
 @Builder
 @Entity
 @Table(name = "users", schema = "public")
@@ -44,18 +47,23 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @JoinColumn(name = "company_id") // company_id
     private Company company;
 
-    @OneToOne(
-            mappedBy = "user",
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    private Profile profile;
+//    @OneToOne(
+//            mappedBy = "user",
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.LAZY
+//    )
+//    private Profile profile;
 
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserChat> userChats = new ArrayList<>();
 
     @Builder.Default
+//    @BatchSize(size = 3) // works with collections -> should be List/Set
+//    Nothing: 1 + N -> 1 + 5
+//    batchSize=3: 1 + N -> 1 + 5/3 -> 3
+    @Fetch(FetchMode.SUBSELECT) // only over collection (OneToMany)
+//    1 + N -> 1 + 1 -> 2
     @OneToMany(mappedBy = "receiver")
     private List<Payment> payments = new ArrayList<>();
 

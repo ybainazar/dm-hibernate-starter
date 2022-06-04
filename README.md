@@ -121,4 +121,7 @@ session.getReference(Company.class , 1);
   * EAGER - returns ref (ref object add to PersistentContext(Cache))
   * LAZY - within current Session, returns by request
 * Cascade (cascade = CascadeType.DETACH) 
-  * 
+
+## 1 + N problem
+1. BatchSize()
+2. @Fetch(FetchMode.SUBSELECT)
