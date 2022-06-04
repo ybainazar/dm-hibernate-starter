@@ -128,3 +128,10 @@ session.getReference(Company.class , 1);
 3. QueryFetch (fetch join)
 4. FetchProfile (work only with get (session.get(User.class, 1L)))
 5. EntityGraph
+
+* Best practice:
+  * avoid **@OneToOne bi-drectional**
+  * use fetch type **LAZY** everywhere
+  * dont prefer **@BatchSize**, **@Fetch**
+  * use query **fetch** (HQL, Criteria API, Querydsl)
+  * prefer **EntityGraph API** then @FetchProfile
