@@ -135,3 +135,23 @@ session.getReference(Company.class , 1);
   * dont prefer **@BatchSize**, **@Fetch**
   * use query **fetch** (HQL, Criteria API, Querydsl)
   * prefer **EntityGraph API** then @FetchProfile
+
+## Transactions isolations
+1. Optimistic Locks (application level)
+   * `@OptimisticLocking(type = OptimisticLockType.VERSION)` -> **BETTER**! uses version for locking rows (first commit rule)
+   * `@OptimisticLocking(type = OptimisticLockType.ALL)` -> uses all column in Where clause
+   * `@OptimisticLocking(type = OptimisticLockType.DIRTY)` -> uses only changed columns in Where
+
+2. Pessimistic Locks (database level)
+   * PESSIMISTIC_READ: adds "for share" in a query (row level locks) 
+   * PESSIMISTIC_WRITE: adds "for update" in a query (row level locks) 
+   * PESSIMISTIC_FORCE_INCREMENT: need version column. "for update" + version increment
+
+* use timeouts (session.get)
+
+## Read-only transactions
+1. Application level
+   * `session.setDefaultReadOnly(true)`   -> no dirty checks (read-only)
+   * `.setReadOnly(true)` -> for HQL
+2. Database level
+   * `session.createNativeQuery("SET TRANSACTION READ ONLY;").executeUpdate()` 
