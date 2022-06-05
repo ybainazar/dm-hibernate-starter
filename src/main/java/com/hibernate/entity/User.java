@@ -39,7 +39,7 @@ import static com.hibernate.util.StringUtils.SPACE;
         }
 )
 @Audited
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Users")
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
@@ -72,7 +72,7 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "user")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "User")
     private List<UserChat> userChats = new ArrayList<>();
 
     @NotAudited
