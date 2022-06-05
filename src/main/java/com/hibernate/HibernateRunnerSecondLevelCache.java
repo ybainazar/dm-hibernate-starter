@@ -9,6 +9,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import javax.transaction.Transactional;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 @Transactional
 public class HibernateRunnerSecondLevelCache {
@@ -24,6 +25,12 @@ public class HibernateRunnerSecondLevelCache {
                 user = session.find(User.class, 1L);
                 var user1 = session.find(User.class, 1L);
 
+                var payment = session.createQuery("select p from Payment p where p.receiver.id = :userID", Payment.class)
+                        .setParameter("userID", 1L)
+                        .setCacheable(true)
+                        .getResultList();
+
+                System.out.println(sessionFactory.getStatistics());
 
                 session.getTransaction().commit();
             }
