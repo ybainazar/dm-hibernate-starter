@@ -20,6 +20,7 @@ public class HibernateRunnerSecondLevelCache {
             try (var session = sessionFactory.openSession()) {
                 session.beginTransaction();
 
+
                 user = session.find(User.class, 1L);
                 var user1 = session.find(User.class, 1L);
 
