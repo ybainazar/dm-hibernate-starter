@@ -1,49 +1,55 @@
 package com.hibernate.dao;
 
-import com.hibernate.entity.Payment;
+import com.hibernate.entity.BaseEntity;
 import lombok.Cleanup;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class PaymentDao implements Dao<Long, Payment> {
+public abstract class RepositoryBase<K extends Serializable, E extends BaseEntity<K>> implements Repository<K, E> {
 
     private final SessionFactory sessionFactory;
+    private final Class<E> clazz;
 
     @Override
-    public Payment save(Payment entity) {
+    public E save(E entity) {
         @Cleanup var session = sessionFactory.openSession();
         session.save(entity);
         return entity;
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(K id) {
         @Cleanup var session = sessionFactory.openSession();
         session.delete(id);
         session.flush();
     }
 
     @Override
-    public void update(Payment entity) {
+    public void update(E entity) {
         @Cleanup var session = sessionFactory.openSession();
         session.merge(entity);
     }
 
     @Override
-    public Optional<Payment> findById(Long id) {
+    public Optional<E> findById(K id) {
         @Cleanup var session = sessionFactory.openSession();
-        return Optional.ofNullable(session.find(Payment.class, id));
+        return Optional.ofNullable(session.find(clazz, id));
     }
 
     @Override
-    public List<Payment> findAll() {
+    public List<E> findAll() {
         @Cleanup var session = sessionFactory.openSession();
-        return session.createQuery("select p from Payment p", Payment.class)
+        var cb = session.getCriteriaBuilder();
+        var criteria = cb.createQuery(clazz);
+        criteria.from(clazz);
+
+        return session.createQuery(criteria)
                 .getResultList();
     }
+
 }
