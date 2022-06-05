@@ -1,9 +1,11 @@
 package com.hibernate.service;
 
 import com.hibernate.dao.UserRepository;
+import com.hibernate.dto.UserCreateDto;
 import com.hibernate.dto.UserReadDto;
 import com.hibernate.entity.User;
 import com.hibernate.mapper.Mapper;
+import com.hibernate.mapper.UserCreateMapper;
 import com.hibernate.mapper.UserReadMapper;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.graph.GraphSemantic;
@@ -16,13 +18,25 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserReadMapper userReadMapper;
+    private final UserCreateMapper userCreateMapper;
+
+    public Long create(UserCreateDto userCreateDto) {
+        // validation
+        // map Dto to object
+        var userEntity = userCreateMapper.mapFrom(userCreateDto);
+        return userRepository.save(userEntity).getId();
+    }
 
     public Optional<UserReadDto> findById(Long id) {
+        return findById(id, userReadMapper);
+    }
+
+    public <T> Optional<T> findById(Long id, Mapper<User, T> mapper) {
         Map<String, Object> properties = Map.of(
                 GraphSemantic.LOAD.getJpaHintName(), userRepository.getEntityManager().getEntityGraph("WithCompany")
         );
         return userRepository.findById(id, properties)
-                .map(userReadMapper::mapFrom);
+                .map(mapper::mapFrom);
     }
 
     public boolean delete(Long id) {
