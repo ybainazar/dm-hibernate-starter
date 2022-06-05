@@ -4,6 +4,7 @@ package com.hibernate.entity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -38,6 +39,7 @@ import static com.hibernate.util.StringUtils.SPACE;
         }
 )
 @Audited
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
@@ -70,6 +72,7 @@ public class User implements Comparable<User>, BaseEntity<Long> {
     @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "user")
+    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private List<UserChat> userChats = new ArrayList<>();
 
     @NotAudited
