@@ -1,6 +1,10 @@
 package com.hibernate;
 
 import com.hibernate.dao.PaymentRepository;
+import com.hibernate.dao.UserRepository;
+import com.hibernate.mapper.CompanyReadMapper;
+import com.hibernate.mapper.UserReadMapper;
+import com.hibernate.service.UserService;
 import com.hibernate.util.HibernateUtil;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -23,10 +27,15 @@ public class HibernateRunnerCRUD {
 
             session.beginTransaction();
 
+            var companyReadMapper = new CompanyReadMapper();
+            var userReadMapper = new UserReadMapper(companyReadMapper);
 
+            var userRepository = new UserRepository(session);
             var paymentRepository = new PaymentRepository(session);
 
-            paymentRepository.findById(1L).ifPresent(System.out::println);
+            var userService = new UserService(userRepository, userReadMapper);
+
+            userService.findById(1L).ifPresent(System.out::println);
 
             session.getTransaction().commit();
 

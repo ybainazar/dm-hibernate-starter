@@ -38,6 +38,12 @@ import static com.hibernate.util.StringUtils.SPACE;
                 @NamedSubgraph(name = "chats", attributeNodes = @NamedAttributeNode("chat"))
         }
 )
+@NamedEntityGraph(
+        name = "WithCompany",
+        attributeNodes = {
+                @NamedAttributeNode("company")
+        }
+)
 @Audited
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "Users")
 public class User implements Comparable<User>, BaseEntity<Long> {
