@@ -68,7 +68,7 @@ public class HibernateRunnerCRUD {
                     PersonalInfo.builder()
                             .firstname("Liza")
                             .lastname("Lizova")
-                            .birthDate(LocalDate.now())
+//                            .birthDate(LocalDate.now())
                             .build(),
                     "liza2@gmail.com",
                     null,
