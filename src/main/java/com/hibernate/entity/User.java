@@ -4,6 +4,8 @@ package com.hibernate.entity;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -35,6 +37,7 @@ import static com.hibernate.util.StringUtils.SPACE;
                 @NamedSubgraph(name = "chats", attributeNodes = @NamedAttributeNode("chat"))
         }
 )
+@Audited
 public class User implements Comparable<User>, BaseEntity<Long> {
 
     @Id
@@ -64,10 +67,12 @@ public class User implements Comparable<User>, BaseEntity<Long> {
 //    )
 //    private Profile profile;
 
+    @NotAudited
     @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<UserChat> userChats = new ArrayList<>();
 
+    @NotAudited
     @Builder.Default
 //    @BatchSize(size = 3) // works with collections -> should be List/Set
 //    Nothing: 1 + N -> 1 + 5

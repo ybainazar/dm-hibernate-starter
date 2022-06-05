@@ -3,6 +3,8 @@ package com.hibernate.entity;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SortNatural;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import javax.persistence.*;
 import java.util.*;
@@ -15,6 +17,7 @@ import java.util.*;
 @ToString(exclude = "users")
 @Builder
 @BatchSize(size = 3)
+@Audited
 public class Company {
 
     @Id
@@ -34,11 +37,13 @@ public class Company {
 //    @SortNatural // in-memory sorting by changing to TreeSet and adding Comparable to User
 //    private Set<User> users = new TreeSet<>();
 
+    @NotAudited
     @MapKey(name = "username")
     @SortNatural
     private Map<String, User> users = new TreeMap<>();
 // orphanRemoval = true -> what to do with users if we manipulate with Set<User> users. If we delete user from users -> remove from DB
 
+    @NotAudited
     @Builder.Default
     @ElementCollection
     @CollectionTable(name = "company_locale", joinColumns = @JoinColumn(name = "company_id"))
