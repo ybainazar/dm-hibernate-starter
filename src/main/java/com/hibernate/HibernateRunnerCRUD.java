@@ -21,9 +21,9 @@ import java.lang.reflect.Proxy;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
-@Transactional
 public class HibernateRunnerCRUD {
 
+    @Transactional
     public static void main(String[] args) throws SQLException {
 
         try (var sessionFactory = HibernateUtil.buildSessionFactory()) {
