@@ -3,9 +3,11 @@ package com.hibernate.dao;
 import com.hibernate.entity.Payment;
 import org.hibernate.SessionFactory;
 
+import javax.persistence.EntityManager;
+
 public class PaymentRepository extends RepositoryBase<Long, Payment> {
 
-    public PaymentRepository(SessionFactory sessionFactory) {
-        super(sessionFactory, Payment.class);
+    public PaymentRepository(EntityManager entityManager) {
+        super(entityManager, Payment.class);
     }
 }
